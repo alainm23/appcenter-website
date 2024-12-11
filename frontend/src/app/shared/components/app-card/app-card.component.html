@@ -1,0 +1,21 @@
+<div
+  class="d-flex flex-row align-items-center p-3 c-pointer app-card"
+  style="max-width: 400px; border: none"
+  (click)="viewApp()"
+>
+  <div>
+    <img
+      [src]="
+        'https://flatpak.elementary.io/repo/appstream/x86_64/icons/128x128/' +
+        app.icon
+      "
+      class="rounded app-icon"
+      alt="Nimbus"
+    />
+  </div>
+
+  <div class="flex-grow-1 ms-3">
+    <h6 class="mb-0">{{ app.name | translateValue }}</h6>
+    <small class="text-muted">{{ app.summary | translateValue }}</small>
+  </div>
+</div>

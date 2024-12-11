@@ -1,0 +1,137 @@
+<section
+  [ngStyle]="{
+    'background-color': getPrimaryColor(app),
+    color: getForegroundColor(app)
+  }"
+>
+  <div class="container p-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between">
+      <div class="d-flex flex-column flex-md-row">
+        <img
+          [src]="
+            'https://flatpak.elementary.io/repo/appstream/x86_64/icons/128x128/' +
+            app.icon
+          "
+          alt="Icon"
+          class="me-md-4 app-icon"
+        />
+        <div
+          class="d-flex flex-column justify-content-center align-items-center align-items-md-start text-center text-md-start"
+        >
+          <h2 class="mb-0">
+            <strong>{{ app.name | translateValue }}</strong>
+          </h2>
+          <p>
+            <small
+              >{{ "by" | translate }}
+              {{ app.developer | translateValue }}</small
+            >
+          </p>
+          <p class="m-0">{{ app.summary | translateValue }}</p>
+        </div>
+      </div>
+
+      <div
+        class="d-flex mt-4 mt-md-0 justify-content-center align-items-md-center"
+      >
+        <a [href]="'appstream://' + app.id" class="btn btn-primary"
+          >Open In AppCenter</a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-4 py-4">
+  <div class="container text-center">
+    <swiper-container #swiper class="swiper" pagination="true" autoplay="true">
+      @for (screenshot of app.screenshots; track app.id; let i = $index) {
+      <swiper-slide>
+        <img
+          class="img-fluid swiper-image p-0 p-md-4"
+          [src]="screenshot.image.url"
+          alt=""
+        />
+      </swiper-slide>
+      }
+    </swiper-container>
+  </div>
+</section>
+
+<section class="mt-4">
+  <div class="container">
+    <p [innerHTML]="app.description | translateValue"></p>
+  </div>
+</section>
+
+<section class="mt-4 py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card mb-3">
+          <div class="list-group list-group-flush">
+            @for (link of linksFirstPart; track $index) {
+            <a
+              [href]="link.text"
+              target="_blank"
+              class="list-group-item list-group-item-action d-flex align-items-center"
+            >
+              <ng-icon [name]="link.icon" />
+              <div class="d-flex flex-column ms-3">
+                <div class="group-title">
+                  {{ link.title }}
+                </div>
+                <div class="group-sub-title">
+                  {{ link.text }}
+                </div>
+              </div>
+            </a>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="card mb-3">
+          <div class="list-group list-group-flush">
+            @for (link of linksSecondPart; track $index) {
+            <a
+              [href]="link.text"
+              target="_blank"
+              class="list-group-item list-group-item-action d-flex align-items-center"
+            >
+              <ng-icon [name]="link.icon" />
+              <div class="d-flex flex-column ms-3">
+                <div class="group-title">
+                  {{ link.title }}
+                </div>
+                <div class="group-sub-title">
+                  {{ link.text }}
+                </div>
+              </div>
+            </a>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-4 border-top">
+  <div class="container">
+    <div class="row">
+      <h5>
+        <strong
+          >{{ "Other Apps by" | translate }}
+          {{ app.developer | translateValue }}</strong
+        >
+      </h5>
+      @for (app of apps (); track app.id) {
+      <div class="col-12 col-md-6 col-lg-4">
+        <app-app-card [app]="app"></app-app-card>
+      </div>
+      }
+    </div>
+  </div>
+</section>

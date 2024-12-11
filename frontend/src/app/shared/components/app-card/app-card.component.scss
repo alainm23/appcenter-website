@@ -1,0 +1,13 @@
+.app-card {
+  transition: transform 0.3s ease;
+}
+
+.app-icon {
+  transition: transform 0.3s ease;
+  width: 64px;
+  height: auto;
+}
+
+.app-card:hover .app-icon {
+  transform: scale(1.2);
+}

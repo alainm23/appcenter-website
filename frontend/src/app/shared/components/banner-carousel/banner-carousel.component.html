@@ -1,0 +1,28 @@
+<swiper-container #swiper class="swiper" pagination="true" autoplay="true">
+  @for (app of apps; track app.id; let i = $index) {
+  <swiper-slide>
+    <div
+      class="d-flex flex-column flex-md-row align-items-center justify-content-center w-100 app-card border p-5 c-pointer"
+      [ngStyle]="{
+        'background-color': getPrimaryColor(app),
+        'background-image': getBackgroundImage(app),
+        color: getForegroundColor(app)
+      }"
+      (click)="viewApp(app)"
+    >
+      <img
+        [src]="
+          'https://flatpak.elementary.io/repo/appstream/x86_64/icons/128x128/' +
+          app.icon
+        "
+        alt="Icon"
+        class="me-md-4"
+      />
+      <div class="d-flex flex-column text-center text-md-start mt-2 mt-md-0">
+        <h2>{{ app.name | translateValue }}</h2>
+        <p>{{ app.summary | translateValue }}</p>
+      </div>
+    </div>
+  </swiper-slide>
+  }
+</swiper-container>

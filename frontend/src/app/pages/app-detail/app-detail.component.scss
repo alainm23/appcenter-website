@@ -1,0 +1,29 @@
+.swiper-image {
+  max-height: 450px;
+  object-fit: contain;
+}
+
+@media (max-width: 576px) {
+  .swiper-image {
+    max-height: 250px;
+  }
+}
+
+.app-icon {
+  max-height: 128px;
+  object-fit: contain;
+}
+
+.list-group-item-action {
+  ng-icon {
+    font-size: 1.5rem;
+  }
+
+  .group-title {
+    font-size: 0.95em;
+  }
+
+  .group-sub-title {
+    font-size: 0.75em;
+  }
+}

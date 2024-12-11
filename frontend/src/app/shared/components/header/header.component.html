@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-lg border-bottom">
+  <div class="container py-2">
+    <a class="navbar-brand c-pointer" (click)="goHome()">
+      <img
+        src="icons/system-software-install.svg"
+        width="32"
+        height="32"
+        class="d-inline-block align-top"
+        alt=""
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div class="form-white input-group" style="width: 250px">
+        <input
+          type="text"
+          class="form-control rounded"
+          [placeholder]="'Search Apps…' | translate"
+          (keyup.enter)="onEnter($event)"
+        />
+      </div>
+    </div>
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          href="https://docs.elementary.io/develop/appcenter/submission-process"
+          >Publish</a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>

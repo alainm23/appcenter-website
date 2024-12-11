@@ -1,0 +1,23 @@
+body {
+  padding-top: 4.5rem;
+  font-family: "Open Sans", sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s; // Transición suave
+}
+
+.primary-color {
+  color: var(--primary-color);
+}
+
+.c-pointer {
+  cursor: pointer;
+}
+
+@function tint($color, $percentage) {
+  @return mix(white, $color, $percentage);
+}
+
+@function shade($color, $percentage) {
+  @return mix(black, $color, $percentage);
+}

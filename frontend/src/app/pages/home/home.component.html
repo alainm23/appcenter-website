@@ -1,0 +1,37 @@
+<div class="container my-4">
+  <div class="row">
+    <app-banner-carousel [apps]="banner"></app-banner-carousel>
+  </div>
+  <div class="row mt-4">
+    <h5>
+      <strong>{{ "Latest Updated Apps" | translate }}</strong>
+    </h5>
+    @for (app of apps (); track app.id) {
+    <div class="col-12 col-md-6 col-lg-4">
+      <app-app-card [app]="app"></app-app-card>
+    </div>
+    }
+  </div>
+
+  <div class="row mt-4">
+    <h5>
+      <strong>{{ "Browse by Category" | translate }}</strong>
+    </h5>
+  </div>
+
+  <div class="row">
+    @for (category of categories; track $index) {
+    <div class="col-12 col-md-6 col-lg-4 mt-2">
+      <div
+        class="card category d-flex justify-content-center align-items-center c-pointer"
+        (click)="viewCategory(category.key)"
+      >
+        <ng-icon class="mb-2" [name]="category.icon" />
+        <span
+          ><strong>{{ category.name }}</strong></span
+        >
+      </div>
+    </div>
+    }
+  </div>
+</div>
