@@ -6,7 +6,9 @@ import { isPlatformBrowser } from '@angular/common';
   providedIn: 'root',
 })
 export class TranslationService {
-  defaultLang = 'en';
+  private _defaultLang = 'en';
+  currentLang!: string;
+
   supportedLangs = ['en', 'es'];
 
   constructor(
@@ -17,18 +19,22 @@ export class TranslationService {
       const savedLang = localStorage.getItem('lng');
       const userLang = this.getUsersLocale();
 
-      this.defaultLang = savedLang
+      this.currentLang = savedLang
         ? savedLang
         : this.supportedLangs.includes(userLang)
         ? userLang
-        : this.defaultLang;
+        : this._defaultLang;
 
-      this.translateService.setDefaultLang(this.defaultLang);
-      this.translateService.use(this.defaultLang);
+      this.translateService.setDefaultLang(this._defaultLang);
+      this.translateService.use(this.currentLang);
     }
   }
 
-  getUsersLocale(defaultValue: string = this.defaultLang): string {
+  get defaultLang(): string {
+    return this._defaultLang;
+  }
+
+  getUsersLocale(defaultValue: string = this._defaultLang): string {
     if (typeof window === 'undefined' || !window.navigator) {
       return defaultValue;
     }
@@ -55,7 +61,9 @@ export class TranslationService {
       console.warn(`Idioma no soportado: ${lang}`);
       return;
     }
+    this.currentLang = lang;
     this.translateService.use(lang);
+
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('lng', lang);
     }

@@ -13,8 +13,9 @@ export class TranslateValuePipe implements PipeTransform {
       return '';
     }
 
-    const currentLang = this.translationService.defaultLang;
+    const currentLang = this.translationService.currentLang;
+    const defaultLang = this.translationService.defaultLang;
 
-    return value[currentLang] || value['en'] || '';
+    return value[currentLang] || value[defaultLang] || '';
   }
 }
