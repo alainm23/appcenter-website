@@ -1,15 +1,20 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { TranslationService } from '../services/translation.service';
 
 @Pipe({
   name: 'translateValue',
   standalone: true,
 })
 export class TranslateValuePipe implements PipeTransform {
-  transform(value: { [key: string]: string }, language: string = 'en'): string {
+  constructor(private translationService: TranslationService) {}
+
+  transform(value: { [key: string]: string }): string {
     if (!value || typeof value !== 'object') {
       return '';
     }
 
-    return value[language] || value['en'] || '';
+    const currentLang = this.translationService.defaultLang;
+
+    return value[currentLang] || value['en'] || '';
   }
 }
