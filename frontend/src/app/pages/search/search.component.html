@@ -3,7 +3,7 @@
     <h5>
       <strong>{{ "Search for" | translate }} '{{ q }}'</strong>
     </h5>
-    <p>{{ apps().length }} results</p>
+    <p>{{ apps().length }} {{ 'results' | translate }}</p>
     @for (app of apps (); track app.id) {
     <div class="col-12 col-md-6 col-lg-4">
       <app-app-card [app]="app"></app-app-card>
