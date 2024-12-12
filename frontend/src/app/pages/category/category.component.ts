@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { AppDataService } from '../../core/services/app-data.service';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { Application } from '../../core/interfaces/application.interface';
 import { CategorieService } from '../../core/services/categories.service';
+import { DesktopApp } from '../../core/interfaces/desktop-app.interface';
 
 @Component({
   selector: 'app-category',
@@ -17,7 +17,7 @@ export class CategoryComponent {
   private _router: Router = inject(Router);
   private _categorieService: CategorieService = inject(CategorieService);
 
-  apps = signal<Application[]>([]);
+  apps = signal<DesktopApp[]>([]);
   category: any;
 
   ngOnInit(): void {
@@ -36,7 +36,7 @@ export class CategoryComponent {
 
   searchApps() {
     this._appDataService.filterAppsByCategory(this.category.key).subscribe({
-      next: (apps: Application[]) => {
+      next: (apps: DesktopApp[]) => {
         this.apps.set(apps);
       },
     });

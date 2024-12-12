@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { AppDataService } from '../../core/services/app-data.service';
-import { Application } from '../../core/interfaces/application.interface';
 import { ActivatedRoute } from '@angular/router';
+import { DesktopApp } from '../../core/interfaces/desktop-app.interface';
 
 @Component({
   selector: 'app-search',
@@ -14,7 +14,7 @@ export class SearchComponent implements OnInit {
   private _appDataService: AppDataService = inject(AppDataService);
   private _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
 
-  apps = signal<Application[]>([]);
+  apps = signal<DesktopApp[]>([]);
   q: string = '';
 
   ngOnInit(): void {
@@ -32,7 +32,7 @@ export class SearchComponent implements OnInit {
 
   searchApps() {
     this._appDataService.searchApps(this.q).subscribe({
-      next: (apps: Application[]) => {
+      next: (apps: DesktopApp[]) => {
         this.apps.set(apps);
       },
     });

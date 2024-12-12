@@ -10,7 +10,7 @@
         <img
           [src]="
             'https://flatpak.elementary.io/repo/appstream/x86_64/icons/128x128/' +
-            app.icon
+            app.id + '.png'
           "
           alt="Icon"
           class="me-md-4 app-icon"
@@ -45,11 +45,11 @@
 <section class="mt-4 py-4">
   <div class="container text-center">
     <swiper-container #swiper pagination="true" autoplay="true">
-      @for (screenshot of app.screenshots; track app.id; let i = $index) {
+      @for (screenshot of app.screenshots; track $index; let i = $index) {
       <swiper-slide>
         <img
           class="img-fluid swiper-image p-0 p-md-4"
-          [src]="screenshot.image.url"
+          [src]="screenshot.url"
           alt=""
         />
       </swiper-slide>
@@ -123,7 +123,7 @@
           <div class="list-group list-group-flush">
             @for (link of linksFirstPart; track $index) {
             <a
-              [href]="link.text"
+              [href]="link.value"
               target="_blank"
               class="list-group-item list-group-item-action d-flex align-items-center"
             >
@@ -133,7 +133,7 @@
                   {{ link.title }}
                 </div>
                 <div class="group-sub-title">
-                  {{ link.text }}
+                  {{ link.value }}
                 </div>
               </div>
             </a>
@@ -147,7 +147,7 @@
           <div class="list-group list-group-flush">
             @for (link of linksSecondPart; track $index) {
             <a
-              [href]="link.text"
+              [href]="link.value"
               target="_blank"
               class="list-group-item list-group-item-action d-flex align-items-center"
             >
@@ -157,7 +157,7 @@
                   {{ link.title }}
                 </div>
                 <div class="group-sub-title">
-                  {{ link.text }}
+                  {{ link.value }}
                 </div>
               </div>
             </a>

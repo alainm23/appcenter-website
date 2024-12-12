@@ -1,4 +1,4 @@
-import { importProvidersFrom, inject, NgModule } from '@angular/core';
+import { importProvidersFrom, NgModule } from '@angular/core';
 import {
   BrowserModule,
   provideClientHydration,

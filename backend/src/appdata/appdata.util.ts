@@ -47,7 +47,7 @@ export const extractUrls = (element: Record<string, any>) => {
   if (Array.isArray(urls)) {
     return urls.map((item) => ({
       type: item._attributes?.type,
-      text: item._text,
+      value: item._text,
     }));
   }
 
@@ -55,7 +55,7 @@ export const extractUrls = (element: Record<string, any>) => {
     return [
       {
         type: urls._attributes?.type,
-        text: urls._text,
+        value: urls._text,
       },
     ];
   }
@@ -73,21 +73,17 @@ export const extractScreenshots = (element: Record<string, any>) => {
   if (Array.isArray(screenshots)) {
     return screenshots.map((item) => ({
       type: item._attributes?.type,
-      caption: item?.caption,
-      image: {
-        type: item?.image?._attributes?.type,
-        url: item?.image?._text,
-      },
+      image_type: item?.image?._attributes?.type,
+      url: item?.image?._text,
     }));
   }
 
   if (screenshots) {
     return [
       {
-        image: {
-          type: screenshots?.image?._attributes?.type,
-          url: screenshots?.image?._text,
-        },
+        type: screenshots._attributes?.type,
+        image_type: screenshots?.image?._attributes?.type,
+        url: screenshots?.image?._text,
       },
     ];
   }
@@ -232,14 +228,14 @@ export const extractMetaData = (element: Record<string, any>) => {
 
   if (Array.isArray(values)) {
     return values.map((item) => ({
-      key: item?._attributes?.key,
+      type: item?._attributes?.key,
       value: item?._text,
     }));
   }
 
   return [
     {
-      key: values?._attributes?.key,
+      type: values?._attributes?.key,
       value: values?._text,
     },
   ];
@@ -293,4 +289,26 @@ export const extractDeveloper = (element: Record<string, any>) => {
 
   name[DEFAULT_LANG] = 'Unknown';
   return name;
+};
+
+export const extractKeywords = (element: Record<string, any>) => {
+  const allKeywords = [];
+
+  const findText = (obj) => {
+    if (typeof obj === "object" && obj !== null) {
+      for (const key in obj) {
+        if (key === "_text") {
+          allKeywords.push(obj[key]);
+        } else {
+          findText(obj[key]);
+        }
+      }
+    } else if (Array.isArray(obj)) {
+      obj.forEach(findText);
+    }
+  };
+
+  findText(element.keywords);
+  return allKeywords;
+
 };

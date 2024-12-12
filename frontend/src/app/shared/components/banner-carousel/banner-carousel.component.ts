@@ -5,9 +5,9 @@ import {
   Input,
 } from '@angular/core';
 import { TranslateValuePipe } from '../../../core/pipes/translate-value.pipe';
-import { Application } from '../../../core/interfaces/application.interface';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { DesktopApp } from '../../../core/interfaces/desktop-app.interface';
 
 @Component({
   selector: 'app-banner-carousel',
@@ -20,13 +20,13 @@ import { CommonModule } from '@angular/common';
 export class BannerCarouselComponent {
   private _router: Router = inject(Router);
 
-  @Input() apps: Application[] = [];
+  @Input() apps: DesktopApp[] = [];
 
-  viewApp(app: Application) {
+  viewApp(app: DesktopApp) {
     this._router.navigate(['apps/' + app.id]);
   }
 
-  getPrimaryColor(data: Application, isDarkTheme = false) {
+  getPrimaryColor(data: DesktopApp, isDarkTheme = false) {
     const schemePreference = isDarkTheme ? "dark" : "light";
   
     if (data.branding) {
@@ -45,7 +45,7 @@ export class BannerCarouselComponent {
   
     if (data.metadata) {
       const metaColor = data.metadata.find(
-        (item) => item.key === "x-appcenter-color-primary"
+        (item) => item.type === "x-appcenter-color-primary"
       );
       if (metaColor) {
         return metaColor.value;
@@ -55,7 +55,7 @@ export class BannerCarouselComponent {
     return "#8cd5ff";
   }
 
-  getBackgroundImage(app: Application): string {
+  getBackgroundImage(app: DesktopApp): string {
     const primaryColor = this.getPrimaryColor(app);
 
     const shade = (color: string, factor: number): string => {
@@ -89,7 +89,7 @@ export class BannerCarouselComponent {
     return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
   }
 
-  getForegroundColor(app: Application): string {
+  getForegroundColor(app: DesktopApp): string {
     const primaryColor = this.getPrimaryColor(app);
     const [r, g, b] = this.hexToRgb(primaryColor);
     const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;

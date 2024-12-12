@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
 import { AppDataService } from '../../core/services/app-data.service';
-import { Application } from '../../core/interfaces/application.interface';
 import { _ } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { CategorieService } from '../../core/services/categories.service';
+import { DesktopApp } from '../../core/interfaces/desktop-app.interface';
 
 @Component({
   selector: 'app-home',
@@ -16,21 +16,19 @@ export class HomeComponent {
   private _router: Router = inject(Router);
   private _categorieService: CategorieService = inject(CategorieService);
 
-  apps = signal<Application[]>([]);
-  banner: Application[] = [];
+  apps = signal<DesktopApp[]>([]);
+  banner: DesktopApp[] = [];
   categories: any[] = [];
 
   ngOnInit(): void {
     this._appDataService.getAppsBanner().subscribe({
-      next: (apps: Application[]) => {
-        console.log(apps);
+      next: (apps: DesktopApp[]) => {
         this.banner = apps;
       },
     });
 
     this._appDataService.getRecentlyUpdated().subscribe({
-      next: (apps: Application[]) => {
-        console.log(apps);
+      next: (apps: DesktopApp[]) => {
         this.apps.set(apps);
       },
     });

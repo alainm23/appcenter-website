@@ -9,7 +9,8 @@
     "test": "ng test",
     "serve:ssr:appcenter-website": "node dist/appcenter-website/server/server.mjs",
     "i18n:init": "ngx-translate-extract --input ./src --output ./public/i18n/template.json --key-as-default-value --replace --format json",
-    "i18n:extract": "ngx-translate-extract --input ./src --output ./public/i18n{/en,/es}.json --clean --format json"
+    "i18n:extract": "ngx-translate-extract --input ./src --output ./public/i18n{/en,/es}.json --clean --format json",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -43,12 +44,15 @@
     "@types/jasmine": "~5.1.0",
     "@types/node": "^18.18.0",
     "@vendure/ngx-translate-extract": "^9.3.1",
+    "angular-eslint": "19.0.2",
+    "eslint": "^9.16.0",
     "jasmine-core": "~5.4.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.6.2"
+    "typescript": "~5.6.2",
+    "typescript-eslint": "8.18.0"
   }
 }

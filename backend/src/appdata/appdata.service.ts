@@ -14,6 +14,7 @@ import {
   extractBranding,
   extractDeveloper,
   DEFAULT_LANG,
+  extractKeywords,
 } from './appdata.util';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Cache } from 'cache-manager';
@@ -81,9 +82,15 @@ export class AppdataService {
     const apps: any[] = await this.getApps();
 
     return apps.filter((app) => {
-      return Object.values(app.name).some((value: string) =>
+      const nameMatch = Object.values(app.name).some((value: string) =>
         value.toLowerCase().includes(query.toLowerCase()),
       );
+
+      const keywordsMatch = app.keywords.some((keyword: string) =>
+        keyword.toLowerCase().includes(query.toLowerCase()),
+      );
+
+      return nameMatch || keywordsMatch;
     });
   }
 
@@ -105,10 +112,9 @@ export class AppdataService {
           name: getTranslateValue(element, 'name'),
           description: extractDescription(element),
           categories: getArrayValue(element?.categories?.category),
-          keywords: getArrayValue(element?.keywords?.keyword),
+          keywords: extractKeywords(element),
           developer: extractDeveloper(element),
           url: extractUrls(element),
-          icon: getAppIcon(element),
           summary: getTranslateValue(element, 'summary'),
           screenshots: extractScreenshots(element?.screenshots?.screenshot),
           releases: extractReleases(element?.releases?.release),

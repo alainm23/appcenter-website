@@ -1,13 +1,13 @@
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AppDataService } from '../../core/services/app-data.service';
-import { Application } from '../../core/interfaces/application.interface';
 import { _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { DesktopApp } from '../../core/interfaces/desktop-app.interface';
 
 interface Link {
   type: string;
-  text: string;
+  value: string;
   title?: string;
   icon?: string;
 }
@@ -25,8 +25,8 @@ export class AppDetailComponent implements OnInit, OnDestroy {
   private _router: Router = inject(Router);
 
   id!: string;
-  app!: Application;
-  apps = signal<Application[]>([]);
+  app!: DesktopApp;
+  apps = signal<DesktopApp[]>([]);
 
   linkDataMap: Record<string, { title: string; icon: string }> = {
     homepage: { title: _('Website'), icon: 'heroGlobeAlt' },
@@ -62,9 +62,9 @@ export class AppDetailComponent implements OnInit, OnDestroy {
 
   fetchData() {
     this._appDataService.getAppDetail(this.id).subscribe({
-      next: (app: Application) => {
+      next: (app: DesktopApp) => {
         this.app = { ...app };
-        console.log (this.app);
+        console.log(this.app);
 
         const [firstPart, secondPart] = this.splitArray(
           this.enrichLinks(this.app.url)
@@ -84,7 +84,7 @@ export class AppDetailComponent implements OnInit, OnDestroy {
     this._appDataService
       .getAppsByDeveloper(this.app.developer['en'])
       .subscribe({
-        next: (apps: Application[]) => {
+        next: (apps: DesktopApp[]) => {
           this.apps.set(apps.filter((app) => app.id !== this.id));
         },
       });
@@ -105,7 +105,7 @@ export class AppDetailComponent implements OnInit, OnDestroy {
     return [array.slice(0, middle), array.slice(middle)];
   }
 
-  getPrimaryColor(data: Application, isDarkTheme = false) {
+  getPrimaryColor(data: DesktopApp, isDarkTheme = false) {
     const schemePreference = isDarkTheme ? 'dark' : 'light';
 
     if (data?.branding) {
@@ -127,7 +127,7 @@ export class AppDetailComponent implements OnInit, OnDestroy {
 
     if (data?.metadata) {
       const metaColor = data.metadata.find(
-        (item) => item.key === 'x-appcenter-color-primary'
+        (item) => item.type === 'x-appcenter-color-primary'
       );
       if (metaColor) {
         return metaColor.value;
@@ -149,7 +149,7 @@ export class AppDetailComponent implements OnInit, OnDestroy {
     return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
   }
 
-  getForegroundColor(app: Application): string {
+  getForegroundColor(app: DesktopApp): string {
     const primaryColor = this.getPrimaryColor(app);
     const [r, g, b] = this.hexToRgb(primaryColor);
     const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;

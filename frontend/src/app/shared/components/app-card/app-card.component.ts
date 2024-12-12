@@ -1,7 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateValuePipe } from '../../../core/pipes/translate-value.pipe';
-import { Application } from '../../../core/interfaces/application.interface';
+import { DesktopApp } from '../../../core/interfaces/desktop-app.interface';
 
 @Component({
   selector: 'app-app-card',
@@ -13,7 +13,7 @@ import { Application } from '../../../core/interfaces/application.interface';
 export class AppCardComponent {
   private _router: Router = inject(Router);
 
-  @Input() app!: Application;
+  @Input() app!: DesktopApp;
 
   viewApp() {
     this._router.navigate(['apps/' + this.app.id]);
