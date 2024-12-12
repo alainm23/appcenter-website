@@ -12,7 +12,6 @@ export class TranslationService {
     private translateService: TranslateService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    console.log ('platformId: ', this.platformId);
     if (isPlatformBrowser(this.platformId)) {
       const savedLang = localStorage.getItem('lng');
       if (savedLang) {

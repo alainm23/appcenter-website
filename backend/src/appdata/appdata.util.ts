@@ -104,7 +104,7 @@ export const extractReleases = (element: Record<string, any>) => {
 
   if (Array.isArray(releases)) {
     return releases.map((item) => ({
-      timestamp: item?._attributes.timestamp,
+      timestamp: item?._attributes.timestamp * 1000,
       description: extractDescription(item),
       issues: extractIssues(item?.issues?.issue),
       version: item?._attributes?.version,
@@ -114,7 +114,7 @@ export const extractReleases = (element: Record<string, any>) => {
   if (releases) {
     return [
       {
-        timestamp: releases?._attributes.timestamp,
+        timestamp: releases?._attributes.timestamp * 1000,
         description: extractDescription(releases),
         issues: extractIssues(releases?.issues?.issue),
         version: releases?._attributes?.version,

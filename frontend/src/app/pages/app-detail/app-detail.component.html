@@ -44,7 +44,7 @@
 
 <section class="mt-4 py-4">
   <div class="container text-center">
-    <swiper-container #swiper class="swiper" pagination="true" autoplay="true">
+    <swiper-container #swiper pagination="true" autoplay="true">
       @for (screenshot of app.screenshots; track app.id; let i = $index) {
       <swiper-slide>
         <img
@@ -60,9 +60,60 @@
 
 <section class="mt-4">
   <div class="container">
-    <p [innerHTML]="app.description | translateValue"></p>
+    <div [innerHTML]="app.description | translateValue"></div>
   </div>
 </section>
+
+@if (app.releases) {
+  <section class="mt-4 py-4">
+    <div class="container">
+      <div class="row">
+        <h5>
+          <strong>{{ "What's New" | translate }} </strong>
+        </h5>
+  
+        <swiper-container class="mt-4" [slidesPerView]="3" [spaceBetween]="32">
+          <swiper-slide></swiper-slide>
+          @for (release of app.releases; track $index) {
+          <swiper-slide>
+            <div
+              class="card card-releases rounded p-3"
+              [ngStyle]="{
+                'background-color': getPrimaryColor(app),
+                color: getForegroundColor(app)
+              }"
+            >
+              <div class="d-flex align-items-center">
+                <ng-icon name="heroTag" class="me-2" /><strong class="me-2">{{
+                  release.version
+                }}</strong
+                >{{ release.timestamp | date }}
+              </div>
+              <div
+                class="mt-2"
+                [innerHTML]="release.description | translateValue"
+              ></div>
+  
+              @if (release.issues.length > 0) {
+              <div class="d-flex align-items-center">
+                <ng-icon name="heroBugAnt" class="me-2" />
+                <strong>Fixed Issues</strong>
+              </div>
+              <ul class="mt-2">
+                @for (issue of release.issues; track $index) {
+                  <li><a [href]="issue.url" target="_blank">{{ issue.issue }}</a></li>
+                }
+              </ul>
+              }
+            </div>
+          </swiper-slide>
+          }
+        </swiper-container>
+      </div>
+    </div>
+  </section>
+}
+
 
 <section class="mt-4 py-4">
   <div class="container">
@@ -118,6 +169,7 @@
   </div>
 </section>
 
+@if (apps().length) {
 <section class="py-4 border-top">
   <div class="container">
     <div class="row">
@@ -135,3 +187,4 @@
     </div>
   </div>
 </section>
+}

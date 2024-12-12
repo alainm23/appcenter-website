@@ -9,4 +9,5 @@ export interface Application {
   branding: any[];
   screenshots: any[];
   url: any[];
+  releases: any[];
 }

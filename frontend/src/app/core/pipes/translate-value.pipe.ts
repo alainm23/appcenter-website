@@ -9,6 +9,7 @@ export class TranslateValuePipe implements PipeTransform {
     if (!value || typeof value !== 'object') {
       return '';
     }
+
     return value[language] || value['en'] || '';
   }
 }

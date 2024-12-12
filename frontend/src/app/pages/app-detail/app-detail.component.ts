@@ -1,8 +1,9 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { AppDataService } from '../../core/services/app-data.service';
 import { Application } from '../../core/interfaces/application.interface';
 import { _ } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 interface Link {
   type: string;
@@ -18,7 +19,7 @@ interface Link {
   templateUrl: './app-detail.component.html',
   styleUrl: './app-detail.component.scss',
 })
-export class AppDetailComponent implements OnInit {
+export class AppDetailComponent implements OnInit, OnDestroy {
   private _activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   private _appDataService: AppDataService = inject(AppDataService);
   private _router: Router = inject(Router);
@@ -38,24 +39,32 @@ export class AppDetailComponent implements OnInit {
   linksFirstPart: Link[] = [];
   linksSecondPart: Link[] = [];
 
+  private _subscriptions: Record<string, Subscription> = {};
+
   ngOnInit(): void {
-    this._activatedRoute.paramMap.subscribe((params: ParamMap) => {
-      this.id = params.get('id') as string;
+    this._subscriptions['params'] = this._activatedRoute.paramMap.subscribe(
+      (params: ParamMap) => {
+        this.id = params.get('id') as string;
 
-      if (!this.id) {
-        this._router.navigate(['home']);
-        return;
+        if (!this.id) {
+          this._router.navigate(['home']);
+          return;
+        }
+
+        this.fetchData();
       }
+    );
+  }
 
-      this.fetchData();
-    });
+  ngOnDestroy(): void {
+    Object.values(this._subscriptions).forEach((sub) => sub.unsubscribe());
   }
 
   fetchData() {
     this._appDataService.getAppDetail(this.id).subscribe({
       next: (app: Application) => {
-        this.app = app;
-        console.log(app);
+        this.app = { ...app };
+        console.log (this.app);
 
         const [firstPart, secondPart] = this.splitArray(
           this.enrichLinks(this.app.url)
