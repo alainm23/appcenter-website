@@ -15,47 +15,38 @@ export const getTranslateValue = (
     return name;
   }
 
-  name[DEFAULT_LANG] = element[key]._text;
+  if (element[key]) {
+    name[DEFAULT_LANG] = element[key]._text;
+  }
+
   return name;
 };
 
-export const getAppIcon = (element: Record<string, any>) => {
-  if (Array.isArray(element.icon) && element.icon.length > 0) {
-    return element.icon[0]._text;
-  }
-
-  return null;
-};
-
 export const getArrayValue = (element: Record<string, any>) => {
-  const values = element;
-
-  if (!values) {
+  if (!element) {
     return [];
   }
 
-  if (Array.isArray(values)) {
-    return values.map((item) => item._text);
+  if (Array.isArray(element)) {
+    return element.map((item) => item._text);
   }
 
-  return [values._text];
+  return [element._text];
 };
 
 export const extractUrls = (element: Record<string, any>) => {
-  const urls = element.url;
-
-  if (Array.isArray(urls)) {
-    return urls.map((item) => ({
+  if (Array.isArray(element)) {
+    return element.map((item) => ({
       type: item._attributes?.type,
       value: item._text,
     }));
   }
 
-  if (urls) {
+  if (element) {
     return [
       {
-        type: urls._attributes?.type,
-        value: urls._text,
+        type: element._attributes?.type,
+        value: element._text,
       },
     ];
   }
@@ -64,42 +55,53 @@ export const extractUrls = (element: Record<string, any>) => {
 };
 
 export const extractScreenshots = (element: Record<string, any>) => {
-  const screenshots = element;
-
-  if (!screenshots) {
-    return [];
+  if (!element) {
+    return {};
   }
 
-  if (Array.isArray(screenshots)) {
-    return screenshots.map((item) => ({
-      type: item._attributes?.type,
-      image_type: item?.image?._attributes?.type,
-      url: item?.image?._text,
-    }));
+  const groupedScreenshots: Record<string, any[]> = {};
+
+  const processImage = (image: any, defaultLang: string) => {
+    const lang = image?._attributes?.['xml:lang'] || defaultLang;
+
+    if (!groupedScreenshots[lang]) {
+      groupedScreenshots[lang] = [];
+    }
+
+    groupedScreenshots[lang].push({
+      image_type: image?._attributes?.type || 'unknown',
+      url: image?._text,
+    });
+  };
+
+  const processImages = (images: any, defaultLang: string) => {
+    if (Array.isArray(images)) {
+      images.forEach((img) => processImage(img, defaultLang));
+    } else if (images) {
+      processImage(images, defaultLang);
+    }
+  };
+
+  if (Array.isArray(element)) {
+    element.forEach((item) => {
+      const images = item.image;
+      processImages(images, DEFAULT_LANG);
+    });
+  } else if (element) {
+    const images = element.image;
+    processImages(images, DEFAULT_LANG);
   }
 
-  if (screenshots) {
-    return [
-      {
-        type: screenshots._attributes?.type,
-        image_type: screenshots?.image?._attributes?.type,
-        url: screenshots?.image?._text,
-      },
-    ];
-  }
-
-  return [];
+  return groupedScreenshots;
 };
 
 export const extractReleases = (element: Record<string, any>) => {
-  const releases = element;
-
-  if (!releases) {
+  if (!element) {
     return [];
   }
 
-  if (Array.isArray(releases)) {
-    return releases.map((item) => ({
+  if (Array.isArray(element)) {
+    return element.map((item) => ({
       timestamp: item?._attributes.timestamp * 1000,
       description: extractDescription(item),
       issues: extractIssues(item?.issues?.issue),
@@ -107,13 +109,13 @@ export const extractReleases = (element: Record<string, any>) => {
     }));
   }
 
-  if (releases) {
+  if (element) {
     return [
       {
-        timestamp: releases?._attributes.timestamp * 1000,
-        description: extractDescription(releases),
-        issues: extractIssues(releases?.issues?.issue),
-        version: releases?._attributes?.version,
+        timestamp: element?._attributes.timestamp * 1000,
+        description: extractDescription(element),
+        issues: extractIssues(element?.issues?.issue),
+        version: element?._attributes?.version,
       },
     ];
   }
@@ -147,7 +149,6 @@ export const extractHtml = (value: Record<string, any>) => {
   Object.keys(value).forEach((key) => {
     const element = value[key];
 
-    // Manejo de múltiples <p>
     if (key === 'p') {
       if (Array.isArray(element)) {
         element.forEach((item) => {
@@ -160,7 +161,6 @@ export const extractHtml = (value: Record<string, any>) => {
       }
     }
 
-    // Manejo de múltiples <ul>
     if (key === 'ul') {
       if (Array.isArray(element)) {
         element.forEach((ulItem) => {
@@ -198,14 +198,12 @@ export const extractHtml = (value: Record<string, any>) => {
 };
 
 export const extractIssues = (element: Record<string, any>) => {
-  const values = element;
-
-  if (!values) {
+  if (!element) {
     return [];
   }
 
-  if (Array.isArray(values)) {
-    return values.map((item) => ({
+  if (Array.isArray(element)) {
+    return element.map((item) => ({
       url: item?._attributes?.url,
       issue: item._text,
     }));
@@ -213,21 +211,19 @@ export const extractIssues = (element: Record<string, any>) => {
 
   return [
     {
-      url: values?._attributes?.url,
-      issue: values?._text,
+      url: element?._attributes?.url,
+      issue: element?._text,
     },
   ];
 };
 
 export const extractMetaData = (element: Record<string, any>) => {
-  const values = element;
-
-  if (!values) {
+  if (!element) {
     return [];
   }
 
-  if (Array.isArray(values)) {
-    return values.map((item) => ({
+  if (Array.isArray(element)) {
+    return element.map((item) => ({
       type: item?._attributes?.key,
       value: item?._text,
     }));
@@ -235,8 +231,8 @@ export const extractMetaData = (element: Record<string, any>) => {
 
   return [
     {
-      type: values?._attributes?.key,
-      value: values?._text,
+      type: element?._attributes?.key,
+      value: element?._text,
     },
   ];
 };
@@ -283,6 +279,15 @@ export const extractDeveloper = (element: Record<string, any>) => {
   }
 
   if (element?.developer_name) {
+    if (Array.isArray(element?.developer_name)) {
+      element?.developer_name.forEach((value: Record<string, any>) => {
+        const lang = value._attributes?.['xml:lang'] ?? DEFAULT_LANG;
+        name[lang] = value._text;
+      });
+
+      return name;
+    }
+
     name[DEFAULT_LANG] = element?.developer_name._text;
     return name;
   }
@@ -294,10 +299,10 @@ export const extractDeveloper = (element: Record<string, any>) => {
 export const extractKeywords = (element: Record<string, any>) => {
   const allKeywords = [];
 
-  const findText = (obj) => {
-    if (typeof obj === "object" && obj !== null) {
+  const findText = (obj: Record<string, any>) => {
+    if (typeof obj === 'object' && obj !== null) {
       for (const key in obj) {
-        if (key === "_text") {
+        if (key === '_text') {
           allKeywords.push(obj[key]);
         } else {
           findText(obj[key]);
@@ -308,7 +313,6 @@ export const extractKeywords = (element: Record<string, any>) => {
     }
   };
 
-  findText(element.keywords);
+  findText(element);
   return allKeywords;
-
 };

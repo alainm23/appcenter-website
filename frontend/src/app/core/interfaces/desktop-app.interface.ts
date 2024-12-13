@@ -25,7 +25,7 @@ export interface DesktopApp {
   developer: Record<string, string>;
   metadata: TypeValue[];
   branding: Branding[];
-  screenshots: Screenshot[];
+  screenshots: Record<string, Screenshot[]>;
   url: TypeValue[];
   releases: Release[];
   categories: string[];

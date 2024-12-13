@@ -3,6 +3,7 @@ import {
   BrowserModule,
   provideClientHydration,
   withEventReplay,
+  withI18nSupport,
 } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -35,9 +36,9 @@ import * as icons from '@ng-icons/heroicons/outline';
     NgIconsModule.withIcons({ ...icons }),
   ],
   providers: [
-    provideClientHydration(withEventReplay()),
+    provideClientHydration(withEventReplay(), withI18nSupport()),
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
-    importProvidersFrom(BrowserAnimationsModule)
+    importProvidersFrom(BrowserAnimationsModule),
   ],
   bootstrap: [AppComponent],
 })

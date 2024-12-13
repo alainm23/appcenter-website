@@ -8,14 +8,27 @@ import { TranslationService } from '../services/translation.service';
 export class TranslateValuePipe implements PipeTransform {
   constructor(private translationService: TranslationService) {}
 
-  transform(value: { [key: string]: string }): string {
-    if (!value || typeof value !== 'object') {
+  transform(value: any): any {
+    if (!value) {
       return '';
     }
 
     const currentLang = this.translationService.currentLang;
     const defaultLang = this.translationService.defaultLang;
 
-    return value[currentLang] || value[defaultLang] || '';
+    if (typeof value === 'object' && !Array.isArray(value)) {
+      return value[currentLang] || value[defaultLang] || '';
+    }
+
+    if (Array.isArray(value)) {
+      const foundValue =
+        value.find((item) => item[currentLang]) ||
+        value.find((item) => item[defaultLang]);
+      return foundValue
+        ? foundValue[currentLang] || foundValue[defaultLang] || ''
+        : '';
+    }
+
+    return '';
   }
 }

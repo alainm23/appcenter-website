@@ -45,7 +45,7 @@
 <section class="mt-4 py-4">
   <div class="container text-center">
     <swiper-container #swiper pagination="true" autoplay="true">
-      @for (screenshot of app.screenshots; track $index; let i = $index) {
+      @for (screenshot of app.screenshots | translateValue ; track $index; let i = $index) {
       <swiper-slide>
         <img
           class="img-fluid swiper-image p-0 p-md-4"
