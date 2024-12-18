@@ -72,8 +72,8 @@
           <strong>{{ "What's New" | translate }} </strong>
         </h5>
   
-        <swiper-container class="mt-4" [slidesPerView]="3" [spaceBetween]="32">
-          <swiper-slide></swiper-slide>
+        <swiper-container class="mt-4" [breakpoints]="breakpoints">
+          <swiper-slide class="d-none d-md-block"></swiper-slide>
           @for (release of app.releases; track $index) {
           <swiper-slide>
             <div

@@ -39,6 +39,17 @@ export class AppDetailComponent implements OnInit, OnDestroy {
   linksFirstPart: Link[] = [];
   linksSecondPart: Link[] = [];
 
+  breakpoints = {
+    0: {
+      slidesPerView: 1,
+      spaceBetween: 32,
+    },
+    576: {
+      slidesPerView: 3,
+      spaceBetween: 32,
+    },
+  };
+
   private _subscriptions: Record<string, Subscription> = {};
 
   ngOnInit(): void {

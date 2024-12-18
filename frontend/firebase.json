@@ -1,0 +1,10 @@
+{
+  "hosting": {
+    "public": "dist/appcenter-website/browser",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
