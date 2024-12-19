@@ -1,43 +1,51 @@
-<nav class="navbar navbar-expand-lg border-bottom">
-  <div class="container py-2">
-    <a class="navbar-brand c-pointer" (click)="goHome()">
+<nav class="navbar navbar-expand-lg shadow-sm">
+  <div class="container d-flex align-items-center justify-content-between">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center" (click)="goHome()">
       <img
         src="icons/system-software-install.svg"
         width="32"
         height="32"
         class="d-inline-block align-top"
-        alt=""
+        alt="Logo"
       />
     </a>
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-mdb-toggle="collapse"
-      data-mdb-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <i class="fas fa-bars"></i>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <div class="form-white input-group" style="width: 250px">
+
+    <div class="search-box-container d-flex flex-grow-1 justify-content-center">
+      <div class="search-box d-flex align-items-center">
+        <i class="bi bi-search search-icon"></i>
         <input
           type="text"
-          class="form-control rounded"
+          class=""
           [placeholder]="'Search Apps…' | translate"
           (keyup.enter)="onEnter($event)"
         />
+        <i class="bi bi-x-circle"></i>
       </div>
     </div>
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      <li class="nav-item">
-        <a
-          class="nav-link"
-          href="https://docs.elementary.io/develop/appcenter/submission-process"
-          >{{ 'Publish' | translate }}</a
-        >
-      </li>
-    </ul>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse pt-2 pt-md-0" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="https://docs.elementary.io/develop/appcenter/submission-process"
+          >
+            {{ "Publish" | translate }}
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>

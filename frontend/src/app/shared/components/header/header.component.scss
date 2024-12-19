@@ -6,3 +6,41 @@ nav {
   z-index: 1000;
   background-color: var(--header-background-color);
 }
+
+.search-box {
+  background-color: #00000013;
+  border-radius: 30px;
+  padding: 5px 15px;
+  width: 75%;
+}
+
+.search-box input,
+.search-box input:focus {
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+}
+
+.search-box .search-icon {
+  color: #aaa;
+}
+
+.navbar .search-box input {
+  flex: 1;
+}
+
+@media (min-width: 992px) {
+  .search-box-container {
+    width: 100% !important;
+  }
+
+  .search-box {
+    width: 50%;
+  }
+}
+
+.navbar-toggler {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}

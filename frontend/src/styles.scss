@@ -1,9 +1,9 @@
 body {
-  padding-top: 4.5rem;
+  padding-top: 4rem;
   font-family: "Open Sans", sans-serif;
   background-color: var(--background-color);
   color: var(--text-color);
-  transition: background-color 0.3s, color 0.3s; // Transición suave
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .primary-color {
