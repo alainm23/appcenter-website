@@ -17,16 +17,9 @@ export class HomeComponent {
   private _categorieService: CategorieService = inject(CategorieService);
 
   apps = signal<DesktopApp[]>([]);
-  banner: DesktopApp[] = [];
   categories: any[] = [];
 
   ngOnInit(): void {
-    this._appDataService.getAppsBanner().subscribe({
-      next: (apps: DesktopApp[]) => {
-        this.banner = apps;
-      },
-    });
-
     this._appDataService.getRecentlyUpdated().subscribe({
       next: (apps: DesktopApp[]) => {
         this.apps.set(apps);

@@ -16,6 +16,7 @@ export class SearchComponent implements OnInit {
 
   apps = signal<DesktopApp[]>([]);
   q: string = '';
+  isLoading = signal<boolean>(true);
 
   ngOnInit(): void {
     this._activatedRoute.queryParams.subscribe(async (query) => {
@@ -31,10 +32,18 @@ export class SearchComponent implements OnInit {
   }
 
   searchApps() {
+    this.apps.set([]);
+    this.isLoading.set(true);
     this._appDataService.searchApps(this.q).subscribe({
       next: (apps: DesktopApp[]) => {
         this.apps.set(apps);
       },
+      error: () => {
+        this.isLoading.set(false);
+      },
+      complete: () => {
+        this.isLoading.set(false);
+      }
     });
   }
 }

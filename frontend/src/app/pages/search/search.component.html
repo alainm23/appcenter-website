@@ -4,6 +4,15 @@
       <strong>{{ "Search for" | translate }} '{{ q }}'</strong>
     </h5>
     <p>{{ apps().length }} {{ 'results' | translate }}</p>
+
+    @if (isLoading()) {
+      <div class="d-flex align-items-center justify-content-center w-100 h-100 p-5">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    }
+    
     @for (app of apps (); track app.id) {
     <div class="col-12 col-md-6 col-lg-4">
       <app-app-card [app]="app"></app-app-card>

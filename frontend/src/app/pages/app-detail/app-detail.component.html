@@ -1,7 +1,16 @@
-<section
+@if (isLoading()) {
+  <div class="d-flex align-items-center justify-content-center w-100 h-100 p-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+}
+
+@if (app) {
+  <section
   [ngStyle]="{
-    'background-color': getPrimaryColor(app),
-    color: getForegroundColor(app)
+    'background-color': primaryColor,
+    color: foregroundColor
   }"
 >
   <div class="container p-4">
@@ -79,8 +88,8 @@
             <div
               class="card card-releases rounded p-3"
               [ngStyle]="{
-                'background-color': getPrimaryColor(app),
-                color: getForegroundColor(app)
+                'background-color': primaryColor,
+                color: foregroundColor
               }"
             >
               <div class="d-flex align-items-center">
@@ -113,7 +122,6 @@
     </div>
   </section>
 }
-
 
 <section class="mt-4 py-4">
   <div class="container">
@@ -187,4 +195,5 @@
     </div>
   </div>
 </section>
+}
 }

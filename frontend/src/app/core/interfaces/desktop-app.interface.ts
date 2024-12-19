@@ -30,4 +30,6 @@ export interface DesktopApp {
   releases: Release[];
   categories: string[];
   keywords: string[];
+  primaryColor: string;
+  foregroundColor: string;
 }

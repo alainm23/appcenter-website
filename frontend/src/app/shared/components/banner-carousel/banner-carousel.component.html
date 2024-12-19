@@ -1,12 +1,22 @@
 <swiper-container #swiper class="swiper" pagination="true" autoplay="true">
-  @for (app of apps; track app.id; let i = $index) {
+  @if (isLoading()) {
+    <swiper-slide>
+      <div class="d-flex align-items-center justify-content-center w-100 h-100">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </swiper-slide>
+  }
+
+  @for (app of apps(); track app.id; let i = $index) {
   <swiper-slide>
     <div
       class="d-flex flex-column flex-md-row align-items-center justify-content-center w-100 app-card border p-5 c-pointer"
       [ngStyle]="{
-        'background-color': getPrimaryColor(app),
-        'background-image': getBackgroundImage(app),
-        color: getForegroundColor(app)
+        'background-color': app.primaryColor,
+        'background-image': backgroundImage(app.primaryColor),
+        color: app.foregroundColor
       }"
       (click)="viewApp(app)"
     >

@@ -4,6 +4,10 @@ import { AppDataService } from '../../core/services/app-data.service';
 import { _ } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { DesktopApp } from '../../core/interfaces/desktop-app.interface';
+import {
+  getForegroundColor,
+  getPrimaryColor,
+} from '../../shared/utils/color.util';
 
 interface Link {
   type: string;
@@ -34,6 +38,7 @@ export class AppDetailComponent implements OnInit, OnDestroy {
     help: { title: _('Get Help'), icon: 'heroQuestionMarkCircle' },
     donation: { title: _('Sponsor'), icon: 'heroHeart' },
     translate: { title: _('Contribute Translations'), icon: 'heroLanguage' },
+    'vcs-browser': { title: _('Get The Source Code'), icon: 'heroCodeBracket' },
   };
 
   linksFirstPart: Link[] = [];
@@ -49,6 +54,10 @@ export class AppDetailComponent implements OnInit, OnDestroy {
       spaceBetween: 32,
     },
   };
+
+  isLoading = signal<boolean>(true);
+  primaryColor: string = '';
+  foregroundColor: string = '';
 
   private _subscriptions: Record<string, Subscription> = {};
 
@@ -72,6 +81,7 @@ export class AppDetailComponent implements OnInit, OnDestroy {
   }
 
   fetchData() {
+    this.isLoading.set(true);
     this._appDataService.getAppDetail(this.id).subscribe({
       next: (app: DesktopApp) => {
         this.app = { ...app };
@@ -84,9 +94,16 @@ export class AppDetailComponent implements OnInit, OnDestroy {
         this.linksSecondPart = [...secondPart];
 
         this.getAppsByDeveloper();
+        this.scrollToTop();
+
+        this.primaryColor = getPrimaryColor(this.app);
+        this.foregroundColor = getForegroundColor(this.primaryColor);
       },
       error: (error) => {
         console.error(error);
+      },
+      complete: () => {
+        this.isLoading.set(false);
       },
     });
   }
@@ -107,7 +124,7 @@ export class AppDetailComponent implements OnInit, OnDestroy {
       if (data) {
         return { ...link, ...data };
       }
-      return { ...link, title: 'Unknown', icon: 'bi-question' };
+      return { ...link, title: 'Unknown', icon: 'heroQuestionMarkCircle' };
     });
   }
 
@@ -116,54 +133,7 @@ export class AppDetailComponent implements OnInit, OnDestroy {
     return [array.slice(0, middle), array.slice(middle)];
   }
 
-  getPrimaryColor(data: DesktopApp, isDarkTheme = false) {
-    const schemePreference = isDarkTheme ? 'dark' : 'light';
-
-    if (data?.branding) {
-      const themeColor = data.branding.find(
-        (item) =>
-          item.type === 'primary' && item.scheme_preference === schemePreference
-      );
-      if (themeColor) {
-        return themeColor.value;
-      }
-
-      const generalColor = data.branding.find(
-        (item) => item.type === 'primary'
-      );
-      if (generalColor) {
-        return generalColor.value;
-      }
-    }
-
-    if (data?.metadata) {
-      const metaColor = data.metadata.find(
-        (item) => item.type === 'x-appcenter-color-primary'
-      );
-      if (metaColor) {
-        return metaColor.value;
-      }
-    }
-
-    return '#8cd5ff';
-  }
-
-  private hexToRgb(hex: string): [number, number, number] {
-    hex = hex.replace('#', '');
-    if (hex.length === 3) {
-      hex = hex
-        .split('')
-        .map((char) => char + char)
-        .join('');
-    }
-    const bigint = parseInt(hex, 16);
-    return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
-  }
-
-  getForegroundColor(app: DesktopApp): string {
-    const primaryColor = this.getPrimaryColor(app);
-    const [r, g, b] = this.hexToRgb(primaryColor);
-    const luminance = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
-    return luminance < 0.5 ? '#ffffff' : '#000000';
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

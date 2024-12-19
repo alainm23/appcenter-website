@@ -18,6 +18,7 @@ export class CategoryComponent {
   private _categorieService: CategorieService = inject(CategorieService);
 
   apps = signal<DesktopApp[]>([]);
+  isLoading = signal<boolean>(true);
   category: any;
 
   ngOnInit(): void {
@@ -35,9 +36,16 @@ export class CategoryComponent {
   }
 
   searchApps() {
+    this.isLoading.set(true);
     this._appDataService.filterAppsByCategory(this.category.key).subscribe({
       next: (apps: DesktopApp[]) => {
         this.apps.set(apps);
+      },
+      error: () => {
+        this.isLoading.set(false);
+      },
+      complete: () => {
+        this.isLoading.set(false);
       },
     });
   }

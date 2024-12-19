@@ -15,11 +15,11 @@ import {
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HeaderComponent } from './shared/components/header/header.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { NgIconsModule } from '@ng-icons/core';
 import * as icons from '@ng-icons/heroicons/outline';
+import { HeaderComponent } from './layout/header/header.component';
 @NgModule({
   declarations: [AppComponent],
   imports: [
